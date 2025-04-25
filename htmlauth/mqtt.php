@@ -47,8 +47,8 @@ if (file_exists($config_file)) {
     $mqtt_host = 'localhost';
     $mqtt_port = '1883';
     $mqtt_user = 'loxberry';
-    $mqtt_password = 'loxberry';
-    $mqtt_topic_prefix = 'cityscoop/synco/';
+    $mqtt_password = 'password';
+    $mqtt_topic_prefix = 'path/to/topic';
 }
 
 // Process form submission
