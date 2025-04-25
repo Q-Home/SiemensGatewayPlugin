@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OZW672 Plugin Config</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 15px; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        .status { margin-top: 10px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h2>OZW672 Plugin Configuratie</h2>
+    <form id="config-form">
+        <label for="ozw672host">OZW672 IP-adres:</label>
+        <input type="text" id="ozw672host" name="ozw672host" required>
+
+        <label for="ozw672username">Gebruikersnaam:</label>
+        <input type="text" id="ozw672username" name="ozw672username" required>
+
+        <label for="ozw672password">Wachtwoord:</label>
+        <input type="password" id="ozw672password" name="ozw672password" required>
+
+        <label for="mqtt_host">MQTT Broker:</label>
+        <input type="text" id="mqtt_host" name="mqtt_host" required>
+
+        <label for="mqtt_username">MQTT Gebruikersnaam:</label>
+        <input type="text" id="mqtt_username" name="mqtt_username">
+
+        <label for="mqtt_password">MQTT Wachtwoord:</label>
+        <input type="password" id="mqtt_password" name="mqtt_password">
+
+        <h3>Servicebeheer</h3>
+        <button type="button" onclick="controlService('start')">Start Script</button>
+        <button type="button" onclick="controlService('stop')">Stop Script</button>
+
+        <div class="status">
+            <strong>Script Status:</strong> <span id="script-status">...</span>
+        </div>
+
+        <button type="submit">Opslaan</button>
+    </form>
+
+    <script>
+        async function fetchConfig() {
+            const response = await fetch('get_config.php');
+            const data = await response.json();
+            document.getElementById('ozw672host').value = data.ozw672host || '';
+            document.getElementById('ozw672username').value = data.ozw672username || '';
+            document.getElementById('ozw672password').value = data.ozw672password || '';
+            document.getElementById('mqtt_host').value = data.mqtt_host || '';
+            document.getElementById('mqtt_username').value = data.mqtt_username || '';
+            document.getElementById('mqtt_password').value = data.mqtt_password || '';
+        }
+
+        async function fetchStatus() {
+            const response = await fetch('service_status.php');
+            const status = await response.text();
+            document.getElementById('script-status').innerText = status;
+        }
+
+        async function controlService(action) {
+            await fetch(`service_control.php?action=${action}`);
+            setTimeout(fetchStatus, 2000);
+        }
+
+        document.getElementById('config-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            await fetch('save_config.php', { method: 'POST', body: formData });
+            alert('Instellingen opgeslagen!');
+        });
+
+        fetchConfig();
+        fetchStatus();
+        setInterval(fetchStatus, 5000);
+    </script>
+</body>
+</html>
