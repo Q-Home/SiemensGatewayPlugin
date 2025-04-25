@@ -6,7 +6,7 @@ Deze handleiding beschrijft hoe je de Siemens Gateway Plugin kunt installeren op
 
 1. **Download de plugin**  
    Download het ZIP-archief van de nieuwste release via de volgende link:  
-   [Siemens Gateway Plugin v0.0.1](https://github.com/Q-Home/SiemensGatewayPlugin/archive/0.0.1.zip)
+   [Siemens Gateway Plugin v0.0.1](https://github.com/Q-Home/SiemensGatewayPlugin/releases/tag/v0.0.1)
 
 2. **Upload naar LoxBerry**  
    Log in op je LoxBerry-webinterface en ga naar de pluginbeheerpagina. Upload het gedownloade ZIP-bestand via de optie "Plugin uploaden".
